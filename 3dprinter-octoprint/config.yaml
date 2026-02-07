@@ -22,9 +22,11 @@ uart: true
 options:
   trusted_proxies: ""
   camera_url: ""
+  safe_mode: false
 schema:
   trusted_proxies: "str?"
   camera_url: "str?"
+  safe_mode: "bool"
 tmpfs: true
 panel_icon: mdi:printer-3d
 panel_title: 3DPrinter-OctoPrint
