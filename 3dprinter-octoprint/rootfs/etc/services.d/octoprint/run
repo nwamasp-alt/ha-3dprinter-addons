@@ -4,7 +4,19 @@
 # Runs OctoPrint
 # ==============================================================================
 
+# Lê a opção do config.yaml
+SAFE_MODE=$(bashio::config 'safe_mode')
+
+# Define os argumentos base
+ARGS="--basedir /data/config/octoprint serve --iknowwhatimdoing --host 0.0.0.0 --port 80"
+
+# Se o Safe Mode estiver ligado no HA, adiciona o flag
+if bashio::var.true "${SAFE_MODE}"; then
+    bashio::log.warning "MODO DE SEGURANÇA ATIVADO! Ignorando plugins de terceiros."
+    ARGS="${ARGS} --safe"
+fi
+
 bashio::log.info "Starting OctoPrint..."
 
-## Run your program
-exec octoprint --basedir /data/config/octoprint serve --iknowwhatimdoing --host 127.0.0.1 --port 80
+## Executa o OctoPrint com os argumentos dinâmicos
+exec octoprint ${ARGS}
