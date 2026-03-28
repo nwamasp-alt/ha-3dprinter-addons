@@ -1,0 +1,16 @@
+{
+  "configuration": {
+    "safe_mode": {
+      "name": "Enable Safe Mode",
+      "description": "If enabled, OctoPrint ignores third-party plugins. Useful for recovering from boot loops after restores."
+    },
+    "trusted_proxies": {
+      "name": "Trusted Proxies",
+      "description": "IP addresses allowed to access via Proxy (e.g., Nginx)."
+    },
+    "camera_url": {
+      "name": "Camera Stream URL",
+      "description": "Direct MJPG-Streamer address (e.g., /webcam/?action=stream)."
+    }
+  }
+}
