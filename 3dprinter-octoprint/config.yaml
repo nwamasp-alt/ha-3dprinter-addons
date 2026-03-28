@@ -1,7 +1,10 @@
 name: "3DPrinter-OctoPrint"
-version: "2025.12.1"
+version: "2025.12.4"
 slug: "3dprinter-octoprint"
 description: "OctoPrint as an addon, no additional bells and whistles."
+panel_icon: "mdi:printer-3d"
+panel_title: "OctoPrint"
+ingress: true
 arch:
   - armv7
   - amd64
