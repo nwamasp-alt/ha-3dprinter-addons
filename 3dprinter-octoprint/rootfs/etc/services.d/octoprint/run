@@ -1,15 +1,11 @@
 #!/usr/bin/with-contenv bashio
 
-# Read Home Assistant configuration options
 SAFE_MODE=$(bashio::config 'safe_mode')
 CAMERA_URL=$(bashio::config 'camera_url')
 TRUSTED_PROXIES=$(bashio::config 'trusted_proxies')
 
-# Define base arguments (adjusted for djfabfab's structure)
-# Note: Using port 80 as it's the internal container port
-ARGS="--basedir /data/.octoprint --host 0.0.0.0 --port 80"
+ARGS="--basedir /data/.octoprint --host 0.0.0.0 --port 80 --iknowwhatimdoing"
 
-# Inject Safe Mode flag if the toggle is enabled in HA
 if bashio::var.true "${SAFE_MODE}"; then
     bashio::log.warning "Starting in SAFE MODE! Third-party plugins are disabled."
     ARGS="${ARGS} --safe"
@@ -17,5 +13,7 @@ fi
 
 bashio::log.info "Starting OctoPrint 1.11.6 (Python 3.13.5)..."
 
-# Execute OctoPrint with dynamic arguments
+export OCTOPRINT_REVERSE_PROXY_TRUST_ADDRESSES="127.0.0.1,::1,172.30.32.1/23"
+
+# Execute OctoPrint
 exec octoprint serve ${ARGS}
