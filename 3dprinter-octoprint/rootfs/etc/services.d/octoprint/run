@@ -1,19 +1,23 @@
 #!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Add-on: 3dprinter-octoprint
+# Runs OctoPrint
+# ==============================================================================
 
+# Read the safe_mode option from the add-on configuration
 SAFE_MODE=$(bashio::config 'safe_mode')
 
-# Reverter qualquer alteração de porta no config.yaml para a original 5000
-if [ -f "/data/.octoprint/config.yaml" ]; then
-    sed -i 's/port: [0-9]*/port: 5000/g' /data/.octoprint/config.yaml
-fi
-
+# Define base arguments using the standard port 5000
+# Note: Using /data/.octoprint is the standard for this container's persistence
 ARGS="--basedir /data/.octoprint --host 0.0.0.0 --port 5000 --iknowwhatimdoing"
 
+# If Safe Mode is enabled in HA settings, append the --safe flag
 if bashio::var.true "${SAFE_MODE}"; then
-    bashio::log.warning "Starting in SAFE MODE!"
+    bashio::log.warning "SAFE MODE ENABLED! Third-party plugins will be disabled."
     ARGS="${ARGS} --safe"
 fi
 
 bashio::log.info "Starting OctoPrint on port 5000..."
 
+# Execute OctoPrint
 exec octoprint serve ${ARGS}
