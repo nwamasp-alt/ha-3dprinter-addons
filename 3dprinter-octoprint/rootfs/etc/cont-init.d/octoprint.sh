@@ -26,10 +26,17 @@ fi
 # Update OctoPrint config with settings for the addon to behave properly.
 updateConfig()
 {
-    # octoprint $BASEDIR config set --bool api.allowCrossOrigin true
+    bashio::log.info "A configurar as permissões de CORS e Iframe para o Home Assistant..."
+    
+    # Ativação do Iframe e CORS (Correção para o painel lateral do HA)
+    octoprint $BASEDIR config set --bool server.allowIframe true
+    octoprint $BASEDIR config set --bool server.cors.enabled true
+    octoprint $BASEDIR config set server.cors.allowOrigin "['*']"
+    octoprint $BASEDIR config set --bool api.allowCrossOrigin true
+
+    # Resto das configurações padrão do teu Add-on
     octoprint $BASEDIR config set folder.generated "/tmp/octoprint/generated"
     octoprint $BASEDIR config set folder.timelapse_tmp "/tmp/octoprint/timelapse/tmp"
-    # octoprint $BASEDIR config set --bool server.allowFraming true
     octoprint $BASEDIR config set server.commands.serverRestartCommand "/scripts/octoprint_restart.sh"
     octoprint $BASEDIR config set server.commands.systemRestartCommand "/scripts/system_restart.sh"
     octoprint $BASEDIR config set server.commands.systemShutdownCommand "/scripts/system_shutdown.sh"
@@ -42,13 +49,13 @@ updateConfig
 # updateConfigCustom() {
     # Add user, if needed.
     # { # Make sure Ingress user for OctoPrint exists.
-    #     bashio::log.notice "Ensure Ingress user (homeassistant) exist."
-    #     if ! octoprint --basedir /data/config/octoprint user list | grep -q 'homeassistant'; then
-    #         new_password=$(date +%s | sha256sum | base64 | head -c 32 ; echo)
-    #         octoprint --basedir /data/config/octoprint user add --password "$new_password" --admin homeassistant # 2> /dev/null
-    #     fi
+    #      bashio::log.notice "Ensure Ingress user (homeassistant) exist."
+    #      if ! octoprint --basedir /data/config/octoprint user list | grep -q 'homeassistant'; then
+    #          new_password=$(date +%s | sha256sum | base64 | head -c 32 ; echo)
+    #          octoprint --basedir /data/config/octoprint user add --password "$new_password" --admin homeassistant # 2> /dev/null
+    #      fi
     # } || { # catch
-    #     bashio::log.warning "Failed to ensure Ingress user exists, may not be able to launch."
+    #      bashio::log.warning "Failed to ensure Ingress user exists, may not be able to launch."
     # }
     # Trusted networks, access control etc.
 # }
