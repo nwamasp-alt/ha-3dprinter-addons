@@ -1,4 +1,4 @@
-ARG BUILD_FROM="ghcr.io/home-assistant/amd64-base-debian:trixie"
+ARG BUILD_FROM="ghcr.io/home-assistant/amd64-base-debian:bookworm"
 FROM ${BUILD_FROM}
 ARG OCTOPRINT_VERSION="1.11.4"
 
@@ -19,7 +19,7 @@ RUN apt update \
     && curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg \
     && curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee /etc/apt/sources.list.d/caddy-stable.list
 
-# Install dependencies
+# Install dependencies (Will automatically install Python 3.11 on Bookworm base)
 RUN apt update \
     && apt install -y \
         --no-install-recommends \
